@@ -1,17 +1,16 @@
 package battleship;
 
 import battleship.data.Map;
-import battleship.data.Ships;
+import battleship.data.ShipUtil;
 
 import java.util.Random;
-import java.util.Scanner;
 
 public class Game {
   public void start() {
     Map.create();
-    Ships.deployRandomShips(1);
+    ShipUtil.deployRandomShips(1);
     Map.print(1);
-    Ships.deployRandomShips(2);
+    ShipUtil.deployRandomShips(2);
     Map.print(2);
 
 

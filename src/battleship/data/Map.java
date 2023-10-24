@@ -26,9 +26,9 @@ public class Map {
       }
       for (int j = 0; j < numCols; j++) {
         boolean isShipLocation = false;
-        for (int shipIndex = 0; shipIndex < Ships.battleShips; shipIndex++) {
-          if ((currentPlayer == 1 && Ships.player1x[shipIndex] == i && Ships.player1y[shipIndex] == j) ||
-              (currentPlayer == 2 && Ships.player2x[shipIndex] == i && Ships.player2y[shipIndex] == j)) {
+        for (int shipIndex = 0; shipIndex < ShipUtil.battleShips; shipIndex++) {
+          if ((currentPlayer == 1 && ShipUtil.player1x[shipIndex] == i && ShipUtil.player1y[shipIndex] == j) ||
+              (currentPlayer == 2 && ShipUtil.player2x[shipIndex] == i && ShipUtil.player2y[shipIndex] == j)) {
             String cellContent = (currentPlayer == 1) ? "1️⃣ " : "2️⃣ ";
             System.out.print(String.format("%3s", cellContent));
             isShipLocation = true;
@@ -56,9 +56,9 @@ public class Map {
 
     boolean isHit = false;
 
-    for (int shipIndex = 0; shipIndex < Ships.battleShips; shipIndex++) {
-      if ((currentPlayer == 1 && Ships.player2x[shipIndex] == x && Ships.player2y[shipIndex] == y) ||
-          (currentPlayer == 2 && Ships.player1x[shipIndex] == x && Ships.player1y[shipIndex] == y)) {
+    for (int shipIndex = 0; shipIndex < ShipUtil.battleShips; shipIndex++) {
+      if ((currentPlayer == 1 && ShipUtil.player2x[shipIndex] == x && ShipUtil.player2y[shipIndex] == y) ||
+          (currentPlayer == 2 && ShipUtil.player1x[shipIndex] == x && ShipUtil.player1y[shipIndex] == y)) {
         isHit = true;
         break;
       }

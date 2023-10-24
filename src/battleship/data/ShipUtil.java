@@ -2,7 +2,7 @@ package battleship.data;
 
 import java.util.Random;
 
-public class Ships {
+public class ShipUtil {
   public static int battleShips = 5;
   public static Random random = new Random();
   public static int[] player1x = new int[battleShips];
