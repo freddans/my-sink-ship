@@ -11,11 +11,10 @@ public class Game {
   public static CellInfo[][] gameBoard = new CellInfo[gameBoardX][gameBoardY];
 
   public static class CellInfo {
-    private Rectangle cell = new Rectangle(30, 30, Color.WHITE); // Initialize with a white rectangle
+    private Rectangle cell = new Rectangle(30, 30, Color.BLUE); // Initialize with a white rectangle
 
     public CellInfo() {
       cell.setStroke(Color.BLACK); // Color borders of cell
-      cell.setFill(Color.BLUE); // Set the cell's fill color to blue
     }
 
     public Rectangle getCell() {
