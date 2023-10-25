@@ -6,9 +6,10 @@ import javafx.scene.shape.Rectangle;
 import java.util.Random;
 
 public class Game {
-  public static int gameBoardX = 10;
-  public static int gameBoardY = 10;
-  public static CellInfo[][] gameBoard = new CellInfo[gameBoardX][gameBoardY];
+  public static int GAME_BOARD_X = 10;
+  public static int GAME_BOARD_Y = 10;
+  private static int NUMBER_OF_SHIPS = 3;
+  public static CellInfo[][] gameBoard = new CellInfo[GAME_BOARD_X][GAME_BOARD_Y];
 
   public static class CellInfo {
     private Rectangle cell = new Rectangle(30, 30, Color.BLUE); // Initialize with a white rectangle
@@ -23,8 +24,8 @@ public class Game {
   }
 
   public void initializeGameBoard() {
-    for (int i = 0; i < gameBoardX; i++) {
-      for (int j = 0; j < gameBoardY; j++) {
+    for (int i = 0; i < GAME_BOARD_X; i++) {
+      for (int j = 0; j < GAME_BOARD_Y; j++) {
         gameBoard[i][j] = new CellInfo();
       }
     }
@@ -37,17 +38,26 @@ public class Game {
 
     // For loop to deploy ships based on numShips. 5 = 5 ships, 3 = 3 etc.
     for (int shipCount = 0; shipCount < numShips; shipCount++) {
-      int x = random.nextInt(gameBoardX);
-      int y = random.nextInt(gameBoardY);
+      int x = random.nextInt(GAME_BOARD_X);
+//      int x = 0;
+      int y = random.nextInt(GAME_BOARD_Y);
+//      int y = 0;
 
       // Check if the cell is water (blue)
       if (isCellBlue(x, y)) {
-        if (hasBlueNeighbor(x, y)) { // check if cell is surrounded by blue cells
-          // If the cell is blue, change color to GRAY (ship color)
+//        if (hasBlueNeighbor(x, y)) { // check if cell is surrounded by blue cells
+//          // If the cell is blue, change color to GRAY (ship color)
+//          gameBoard[x][y].getCell().setFill(Color.GRAY);
+//          System.out.println("#" + (shipCount + 1) + " Ship coordinates: (" + x + ", " + y + ")");
+//        } else {
+//          shipCount--; // if criterias are not met, try to deploy again at different random coordinates.
+//        }
+        if (x + 2 < GAME_BOARD_X && y + 2 < GAME_BOARD_Y) {
           gameBoard[x][y].getCell().setFill(Color.GRAY);
-          System.out.println("#" + (shipCount + 1) + " Ship coordinates: (" + x + ", " + y + ")");
+          gameBoard[x][y+1].getCell().setFill(Color.GRAY);
+          gameBoard[x][y+2].getCell().setFill(Color.GRAY);
         } else {
-          shipCount--; // if criterias are not met, try to deploy again at different random coordinates.
+          shipCount--;
         }
 
       } else {
@@ -61,20 +71,20 @@ public class Game {
     Random random = new Random();
     int shipsHit = 0;
 
-    while (shipsHit < 5) {
+    while (shipsHit < NUMBER_OF_SHIPS) {
 
-      for (int i = 0; i < 1; i++) {
-        if (shipsHit == 5) {
+      for (int tries = 0; tries < 1; tries++) {
+        if (shipsHit == NUMBER_OF_SHIPS) {
           System.out.println("🥇🏆 Congratulations! 🏆🥇");
           break;
         } else {
-          int x = random.nextInt(gameBoardX);
-          int y = random.nextInt(gameBoardY);
+          int x = random.nextInt(GAME_BOARD_X);
+          int y = random.nextInt(GAME_BOARD_Y);
 
 
           // if coordinate already has been shot - do another try
           if (gameBoard[x][y].getCell().getFill() == Color.BLACK || gameBoard[x][y].getCell().getFill() == Color.RED) {
-            i--;
+            tries--;
           }
           // if ship has been hit, get another try.
           else if (isShipHit(x, y)) {
@@ -85,7 +95,7 @@ public class Game {
             System.out.println("Hit!");
             System.out.println("Opponent 💬: You sunk my Battleship!");
             shipsHit++; // count hits
-            i--; // new try
+            tries--; // new try
             // if shot misses and hits water
           } else if (isCellBlue(x, y)) {
             System.out.println(); // Linebreaker
@@ -128,7 +138,7 @@ public class Game {
 
   // Check if a cell is blue(water)
   private boolean isCellBlue(int x, int y) {
-    return (x >= 0 && x < gameBoardX && y >= 0 && y < gameBoardY
+    return (x >= 0 && x < GAME_BOARD_X && y >= 0 && y < GAME_BOARD_Y
         && gameBoard[x][y].getCell().getFill() == Color.BLUE);
   }
 }

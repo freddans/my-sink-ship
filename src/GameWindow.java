@@ -18,13 +18,13 @@ public class GameWindow extends Application {
     // Initialize the game board
     Game game = new Game();
     game.initializeGameBoard();
-    game.placeShips(5); // Place your ships on the game board
+    game.placeShips(1); // Place your ships on the game board
     game.randomShot();
 
     // Create a GridPane to display the game board
     GridPane gridPane = new GridPane();
-    for (int i = 0; i < Game.gameBoardX; i++) {
-      for (int j = 0; j < Game.gameBoardY; j++) {
+    for (int i = 0; i < Game.GAME_BOARD_X; i++) {
+      for (int j = 0; j < Game.GAME_BOARD_Y; j++) {
         gridPane.add(game.gameBoard[i][j].getCell(), j, i);
       }
     }
