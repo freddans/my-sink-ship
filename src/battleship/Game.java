@@ -115,11 +115,8 @@ public class Game {
     } else if (nrOfCells == 5) {
       Random random = new Random();
       for (int shipCount = 0; shipCount < numShips; shipCount++) {
-//        int x = random.nextInt(GAME_BOARD_X);
-//        int y = random.nextInt(GAME_BOARD_Y);
-
-        int x = 9;
-        int y = 5;
+        int x = random.nextInt(GAME_BOARD_X);
+        int y = random.nextInt(GAME_BOARD_Y);
 
         System.out.println("5 ship coords: (x" + x + ", y" + y + ")");
 
