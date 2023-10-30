@@ -32,8 +32,37 @@ public class Game {
   }
 
 
+  // vertical placement
+  public void placeShipsVertical(int numShips, int nrOfCells) {
+    if (nrOfCells == 2) {
+      Random random = new Random();
+      for (int shipCount = 0; shipCount < numShips; shipCount++) {
+        int x = random.nextInt(GAME_BOARD_X);
+        int y = random.nextInt(GAME_BOARD_Y);
 
-  public void placeShips(int numShips, int nrOfCells) {
+        System.out.println("2 ship coords: (x" + x + ", y" + y + ")");
+
+        if (x + 1 < GAME_BOARD_X && y < GAME_BOARD_Y) {
+          if (isCellBlue(x, y) && isCellBlue(x+1, y)) { // becomes ship
+            if (twoBlueCheckVertical(x, y)) {
+              gameBoard[x][y].getCell().setFill(Color.GRAY);
+              gameBoard[x+1][y].getCell().setFill(Color.GRAY);
+            } else { // if blues arent neighboring, get free spin
+              shipCount--;
+              System.out.println("free turn inside");
+            }
+          } else { // if ship cant be created - get free spin
+            shipCount--;
+          }
+        } else { // if outside of span - free spin
+          shipCount--;
+          System.out.println("Free turn in the end");
+        }
+      }
+    }
+  }
+
+  public void placeShipsHorizontal(int numShips, int nrOfCells) {
     if (nrOfCells == 2) {
       Random random = new Random();
       for (int shipCount = 0; shipCount < numShips; shipCount++) {
@@ -240,6 +269,62 @@ public class Game {
       }
     } else if (x == 9 && y == 8) {
       if (leftCell && topLeft && topOne && topTwo) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean twoBlueCheckVertical(int x, int y) {
+    // tops
+    boolean topLeft = isCellBlue(x - 1, y - 1);
+    boolean topOne = isCellBlue(x - 1, y);
+    boolean topRight = isCellBlue(x - 1, y + 1);
+    // rights
+    boolean rightOne = isCellBlue(x, y + 1);
+    boolean rightTwo = isCellBlue(x+1, y + 1);
+    // bottom cells
+    boolean rightThree = isCellBlue(x + 2, y + 1);
+    boolean twoShipBottom = isCellBlue(x + 2, y);
+    boolean leftThree = isCellBlue(x+2, y-1);
+    // lefts
+    boolean leftTwo = isCellBlue(x+1, y - 1);
+    boolean leftOne = isCellBlue(x, y - 1);
+
+    if (x == 0 && y == 0) { // Up left corner
+      if (rightOne && rightTwo && rightThree && twoShipBottom) {
+        return rightOne && rightTwo && rightThree && twoShipBottom;
+      }
+    } else if (x == 0 && y > 0 && y < 9) { // top mid
+      if (leftOne && leftTwo && leftThree && twoShipBottom && rightThree && rightTwo && rightOne) {
+        return true;
+      }
+    } else if (x == 0 && y == 9) { // up right corner
+      if (leftOne && leftTwo && leftThree && twoShipBottom) {
+        return true;
+      }
+    } else if (x > 0 && x < 8 && y == 0) { // left mid
+      if (topOne && topRight && rightOne && rightTwo && rightThree && twoShipBottom) {
+        return true;
+      }
+    } else if (x > 0 && x < 8 && y > 0 && y < 9) { // middle middle
+      if (topLeft && topOne && topRight && rightOne && rightTwo && rightThree && twoShipBottom && leftThree && leftTwo && leftOne) {
+        return true;
+      }
+    } else if (x > 0 && x < 8 && y == 9) { // right middle
+      if (topOne && topLeft && leftOne && leftTwo && leftThree && twoShipBottom) {
+        return true;
+      }
+    } else if (x == 8 && y == 0) { // bottom left corner
+      if (topOne && topRight && rightOne && rightTwo) {
+        return true;
+      }
+    } else if (x == 8 && y > 0 && y < 8) { // bottom middle
+      if (leftTwo && leftOne && topLeft && topOne && topRight && rightOne && rightTwo) {
+        return true;
+      }
+    } else if (x == 8 && y == 9) { // bottom right corner
+      if (leftTwo && leftOne && topLeft && topOne) {
         return true;
       }
     }
