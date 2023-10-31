@@ -312,7 +312,7 @@ public class Game {
 
             gameBoard[x][y].getCell().setFill(Color.RED); // change cell to red
             System.out.println("Hit!");
-            System.out.println("Opponent 💬: You sunk my Battleship!");
+            System.out.println("Opponent 💬: Bastard!");
             nrOfHits++; // count hits
             tries--; // new try
             // if shot misses and hits water
