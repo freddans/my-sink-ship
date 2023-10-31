@@ -8,7 +8,7 @@ public class GameWindow extends Application {
 
   public static void main(String[] args) {
     launch(args);
-    
+
   }
 
   @Override
@@ -19,19 +19,10 @@ public class GameWindow extends Application {
     Game game = new Game();
     game.initializeGameBoard();
 
+
     // Place ships of different sizes
     // if lack of space for vertical, it tries to create horizontal
-    // 1st 5ship. 2st 4ships. 3st 3ships. 4st 2 ships
-    game.placeShipsVertical(1, 5);
-    game.placeShipsVertical(1, 3);
-    game.placeShipsVertical(1, 4);
-    game.placeShipsVertical(1, 2);
-    game.placeShipsVertical(1, 3);
-    game.placeShipsVertical(1, 4);
-    game.placeShipsVertical(1, 2);
-    game.placeShipsVertical(1, 3);
-    game.placeShipsVertical(1, 2);
-    game.placeShipsVertical(1, 2);
+    game.deployShips();
     game.randomShot();
 
     // Create a GridPane to display the game board

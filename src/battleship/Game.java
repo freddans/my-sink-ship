@@ -32,6 +32,81 @@ public class Game {
     }
   }
 
+  // place random ship
+  public void deployShips() {
+
+    int numberOfShips = 10;
+    int fiveShips = 0;
+    int fourShips = 0;
+    int threeShips = 0;
+    int twoShips = 0;
+
+    while (numberOfShips > 0) {
+      Random random = new Random();
+      int randomNr = random.nextInt(4) + 2;
+
+      if (twoShips != 4) {
+        if (randomNr == 2) {
+          int vertOrHorizontal = random.nextInt(2) + 1;
+
+          if (vertOrHorizontal == 1) {
+            placeShipsVertical(1, 2);
+            numberOfShips--;
+            twoShips++;
+          } else if (vertOrHorizontal == 2) {
+            placeShipsHorizontal(1, 2);
+            numberOfShips--;
+            twoShips++;
+          }
+        }
+      }
+      if (threeShips != 3) {
+        if (randomNr == 3) {
+          int vertOrHorizontal = random.nextInt(2) + 1;
+
+          if (vertOrHorizontal == 1) {
+            placeShipsVertical(1, 3);
+            numberOfShips--;
+            threeShips++;
+          } else if (vertOrHorizontal == 2) {
+            placeShipsHorizontal(1, 3);
+            numberOfShips--;
+            threeShips++;
+          }
+        }
+      }
+      if (fourShips != 2) {
+        if (randomNr == 4) {
+          int vertOrHorizontal = random.nextInt(2) + 1;
+
+          if (vertOrHorizontal == 1) {
+            placeShipsVertical(1, 4);
+            numberOfShips--;
+            fourShips++;
+          } else if (vertOrHorizontal == 2) {
+            placeShipsHorizontal(1, 4);
+            numberOfShips--;
+            fourShips++;
+          }
+        }
+      }
+      if (fiveShips != 1) {
+        if (randomNr == 5) {
+          int vertOrHorizontal = random.nextInt(2) + 1;
+
+          if (vertOrHorizontal == 1) {
+            placeShipsVertical(1, 5);
+            numberOfShips--;
+            fiveShips++;
+          } else if (vertOrHorizontal == 2) {
+            placeShipsHorizontal(1, 5);
+            numberOfShips--;
+            fiveShips++;
+          }
+        }
+      }
+    }
+  }
 
   // vertical placement
   public void placeShipsVertical(int numShips, int nrOfCells) {
@@ -353,7 +428,7 @@ public class Game {
       if (bottomOne && bottomTwo && bottomThree && twoShipRight) {
         return bottomOne && bottomTwo && bottomThree && twoShipRight;
       }
-    } else if (x == 0 && y > 0 && y < 8) { // DENNA HADE y < GAME_BOARD_Y i slutet istället för < 8
+    } else if (x == 0 && y > 0 && y < 8) {
       if (leftCell && bottomLeft && bottomOne && bottomTwo && bottomThree && twoShipRight) {
         return leftCell && bottomLeft && bottomOne && bottomTwo && bottomThree && twoShipRight;
       }
@@ -361,7 +436,6 @@ public class Game {
       if (leftCell && bottomLeft && bottomOne && bottomTwo) {
         return leftCell && bottomLeft && bottomOne && bottomTwo;
       }
-
     } else if (x > 0 && x < 9 && y == 0) {
       if (topOne && topTwo && topThree && twoShipRight && bottomThree && bottomTwo && bottomOne) {
         return true;
