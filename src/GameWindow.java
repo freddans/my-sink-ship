@@ -20,8 +20,11 @@ public class GameWindow extends Application {
     game.initializeGameBoard();
 
     // Place ships of different sizes
-    game.placeShipsVertical(1, 2);
-//    game.randomShot();
+    game.placeShipsVertical(1, 5);
+    game.placeShipsVertical(1, 4);
+    game.placeShipsVertical(3, 3);
+    game.placeShipsVertical(3, 2);
+    game.randomShot();
 
     // Create a GridPane to display the game board
     GridPane gridPane = new GridPane();

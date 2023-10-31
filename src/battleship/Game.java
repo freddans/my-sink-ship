@@ -9,6 +9,7 @@ public class Game {
   public static int GAME_BOARD_X = 10;
   public static int GAME_BOARD_Y = 10;
   private static int NUMBER_OF_SHIPS = 3;
+  private int nrOfShipColumns = 0;
   public static CellInfo[][] gameBoard = new CellInfo[GAME_BOARD_X][GAME_BOARD_Y];
 
   public static class CellInfo {
@@ -43,16 +44,113 @@ public class Game {
         System.out.println("2 ship coords: (x" + x + ", y" + y + ")");
 
         if (x + 1 < GAME_BOARD_X && y < GAME_BOARD_Y) {
-          if (isCellBlue(x, y) && isCellBlue(x+1, y)) { // becomes ship
+          if (isCellBlue(x, y) && isCellBlue(x + 1, y)) { // becomes ship
             if (twoBlueCheckVertical(x, y)) {
               gameBoard[x][y].getCell().setFill(Color.GRAY);
-              gameBoard[x+1][y].getCell().setFill(Color.GRAY);
+              gameBoard[x + 1][y].getCell().setFill(Color.GRAY);
+
+              nrOfShipColumns += 2; // adding columnds for shot method
+
             } else { // if blues arent neighboring, get free spin
               shipCount--;
               System.out.println("free turn inside");
             }
           } else { // if ship cant be created - get free spin
             shipCount--;
+            placeShipsHorizontal(shipCount, 2);
+          }
+        } else { // if outside of span - free spin
+          shipCount--;
+          System.out.println("Free turn in the end");
+        }
+      }
+    } else if (nrOfCells == 3) {
+      Random random = new Random();
+      for (int shipCount = 0; shipCount < numShips; shipCount++) {
+        int x = random.nextInt(GAME_BOARD_X);
+        int y = random.nextInt(GAME_BOARD_Y);
+
+        System.out.println("3 ship coords: (x" + x + ", y" + y + ")");
+
+        if (x + 2 < GAME_BOARD_X && y < GAME_BOARD_Y) {
+          if (isCellBlue(x, y) && isCellBlue(x + 1, y) && isCellBlue(x + 2, y)) { // becomes ship
+            if (threeBlueCheckVertical(x, y)) {
+              gameBoard[x][y].getCell().setFill(Color.GRAY);
+              gameBoard[x + 1][y].getCell().setFill(Color.GRAY);
+              gameBoard[x + 2][y].getCell().setFill(Color.GRAY);
+
+              nrOfShipColumns += 3; // adding columnds for shot method
+
+            } else { // if blues arent neighboring, get free spin
+              shipCount--;
+              System.out.println("free turn inside");
+            }
+          } else { // if ship cant be created - get free spin
+            shipCount--;
+            placeShipsHorizontal(shipCount, 3);
+          }
+        } else { // if outside of span - free spin
+          shipCount--;
+          System.out.println("Free turn in the end");
+        }
+      }
+    } else if (nrOfCells == 4) {
+      Random random = new Random();
+      for (int shipCount = 0; shipCount < numShips; shipCount++) {
+        int x = random.nextInt(GAME_BOARD_X);
+        int y = random.nextInt(GAME_BOARD_Y);
+
+        System.out.println("4 ship coords: (x" + x + ", y" + y + ")");
+
+        if (x + 3 < GAME_BOARD_X && y < GAME_BOARD_Y) {
+          if (isCellBlue(x, y) && isCellBlue(x + 1, y) && isCellBlue(x + 2, y) && isCellBlue(x + 3, y)) { // becomes ship
+            if (fourBlueCheckVertical(x, y)) {
+              gameBoard[x][y].getCell().setFill(Color.GRAY);
+              gameBoard[x + 1][y].getCell().setFill(Color.GRAY);
+              gameBoard[x + 2][y].getCell().setFill(Color.GRAY);
+              gameBoard[x + 3][y].getCell().setFill(Color.GRAY);
+
+              nrOfShipColumns += 4; // adding columnds for shot method
+
+            } else { // if blues arent neighboring, get free spin
+              shipCount--;
+              System.out.println("free turn inside");
+            }
+          } else { // if ship cant be created - get free spin
+            shipCount--;
+            placeShipsHorizontal(shipCount, 4); // place horizontal
+          }
+        } else { // if outside of span - free spin
+          shipCount--;
+          System.out.println("Free turn in the end");
+        }
+      }
+    } else if (nrOfCells == 5) {
+      Random random = new Random();
+      for (int shipCount = 0; shipCount < numShips; shipCount++) {
+        int x = random.nextInt(GAME_BOARD_X);
+        int y = random.nextInt(GAME_BOARD_Y);
+
+        System.out.println("5 ship coords: (x" + x + ", y" + y + ")");
+
+        if (x + 4 < GAME_BOARD_X && y < GAME_BOARD_Y) {
+          if (isCellBlue(x, y) && isCellBlue(x + 1, y) && isCellBlue(x + 2, y) && isCellBlue(x + 3, y) && isCellBlue(x + 4, y)) { // becomes ship
+            if (fiveBlueCheckVertical(x, y)) {
+              gameBoard[x][y].getCell().setFill(Color.GRAY);
+              gameBoard[x + 1][y].getCell().setFill(Color.GRAY);
+              gameBoard[x + 2][y].getCell().setFill(Color.GRAY);
+              gameBoard[x + 3][y].getCell().setFill(Color.GRAY);
+              gameBoard[x + 4][y].getCell().setFill(Color.GRAY);
+
+              nrOfShipColumns += 5; // adding columnds for shot method
+
+            } else { // if blues arent neighboring, get free spin
+              shipCount--;
+              System.out.println("free turn inside");
+            }
+          } else { // if ship cant be created - get free spin
+            shipCount--;
+            placeShipsHorizontal(shipCount, 5);
           }
         } else { // if outside of span - free spin
           shipCount--;
@@ -62,6 +160,7 @@ public class Game {
     }
   }
 
+  // horizontal placement
   public void placeShipsHorizontal(int numShips, int nrOfCells) {
     if (nrOfCells == 2) {
       Random random = new Random();
@@ -76,12 +175,16 @@ public class Game {
             if (twoBlueCheckHorizontal(x, y)) {
               gameBoard[x][y].getCell().setFill(Color.GRAY);
               gameBoard[x][y + 1].getCell().setFill(Color.GRAY);
+
+              nrOfShipColumns += 2; // adding columnds for shot method
+
             } else { // if blues arent neighboring, get free spin
               shipCount--;
               System.out.println("free turn inside");
             }
           } else { // if ship cant be created, get free spin
             shipCount--;
+            placeShipsVertical(shipCount, 2);
           }
         } else { // if outside of span - free spin
           shipCount--;
@@ -102,12 +205,16 @@ public class Game {
               gameBoard[x][y].getCell().setFill(Color.GRAY);
               gameBoard[x][y + 1].getCell().setFill(Color.GRAY);
               gameBoard[x][y + 2].getCell().setFill(Color.GRAY);
+
+              nrOfShipColumns += 3; // adding columnds for shot method
+
             } else { // if blues arent neighboring, get fre spin
               shipCount--;
               System.out.println("free turn inside");
             }
           } else { // if ship cant be created - free spin
             shipCount--;
+            placeShipsVertical(shipCount, 3);
           }
         } else { // if outside of span - free spin
           shipCount--;
@@ -129,12 +236,16 @@ public class Game {
               gameBoard[x][y + 1].getCell().setFill(Color.GRAY);
               gameBoard[x][y + 2].getCell().setFill(Color.GRAY);
               gameBoard[x][y + 3].getCell().setFill(Color.GRAY);
+
+              nrOfShipColumns += 4; // adding columnds for shot method
+
             } else { // if blues arent neighboring, get free spin
               shipCount--;
               System.out.println("free turn inside");
             }
           } else { // if ship cant be created - free spin
             shipCount--;
+            placeShipsVertical(shipCount, 4);
           }
         } else { // if outside of span - free spin
           shipCount--;
@@ -157,12 +268,16 @@ public class Game {
               gameBoard[x][y + 2].getCell().setFill(Color.GRAY);
               gameBoard[x][y + 3].getCell().setFill(Color.GRAY);
               gameBoard[x][y + 4].getCell().setFill(Color.GRAY);
+
+              nrOfShipColumns += 5; // adding columnds for shot method
+
             } else { // if blues arent neighboring, get free spin
               shipCount--;
               System.out.println("free turn inside");
             }
           } else { // if ship cant be created - free spin
             shipCount--;
+            placeShipsVertical(shipCount, 5);
           }
         } else { // if outside of span - free spin
           shipCount--;
@@ -174,12 +289,12 @@ public class Game {
 
   public void randomShot() {
     Random random = new Random();
-    int shipsHit = 0;
+    int nrOfHits = 0;
 
-    while (shipsHit < NUMBER_OF_SHIPS) {
+    while (nrOfHits < nrOfShipColumns) {
 
       for (int tries = 0; tries < 1; tries++) {
-        if (shipsHit == NUMBER_OF_SHIPS) {
+        if (nrOfHits == nrOfShipColumns) {
           System.out.println("🥇🏆 Congratulations! 🏆🥇");
           break;
         } else {
@@ -198,7 +313,7 @@ public class Game {
             gameBoard[x][y].getCell().setFill(Color.RED); // change cell to red
             System.out.println("Hit!");
             System.out.println("Opponent 💬: You sunk my Battleship!");
-            shipsHit++; // count hits
+            nrOfHits++; // count hits
             tries--; // new try
             // if shot misses and hits water
           } else if (isCellBlue(x, y)) {
@@ -282,13 +397,13 @@ public class Game {
     boolean topRight = isCellBlue(x - 1, y + 1);
     // rights
     boolean rightOne = isCellBlue(x, y + 1);
-    boolean rightTwo = isCellBlue(x+1, y + 1);
+    boolean rightTwo = isCellBlue(x + 1, y + 1);
     // bottom cells
     boolean rightThree = isCellBlue(x + 2, y + 1);
     boolean twoShipBottom = isCellBlue(x + 2, y);
-    boolean leftThree = isCellBlue(x+2, y-1);
+    boolean leftThree = isCellBlue(x + 2, y - 1);
     // lefts
-    boolean leftTwo = isCellBlue(x+1, y - 1);
+    boolean leftTwo = isCellBlue(x + 1, y - 1);
     boolean leftOne = isCellBlue(x, y - 1);
 
     if (x == 0 && y == 0) { // Up left corner
@@ -390,6 +505,64 @@ public class Game {
     return false;
   }
 
+  private boolean threeBlueCheckVertical(int x, int y) {
+    // tops
+    boolean topLeft = isCellBlue(x - 1, y - 1);
+    boolean topOne = isCellBlue(x - 1, y);
+    boolean topRight = isCellBlue(x - 1, y + 1);
+    // rights
+    boolean rightOne = isCellBlue(x, y + 1);
+    boolean rightTwo = isCellBlue(x + 1, y + 1);
+    boolean rightThree = isCellBlue(x + 2, y + 1);
+    // bottom cells
+    boolean rightFour = isCellBlue(x + 3, y + 1);
+    boolean threeShipBottom = isCellBlue(x + 3, y);
+    boolean leftFour = isCellBlue(x + 3, y - 1);
+    // lefts
+    boolean leftThree = isCellBlue(x + 2, y - 1);
+    boolean leftTwo = isCellBlue(x + 1, y - 1);
+    boolean leftOne = isCellBlue(x, y - 1);
+
+    if (x == 0 && y == 0) { // Up left corner
+      if (rightOne && rightTwo && rightThree && rightFour && threeShipBottom) {
+        return true;
+      }
+    } else if (x == 0 && y > 0 && y < 9) { // top mid
+      if (leftOne && leftTwo && leftThree && leftFour && threeShipBottom && rightFour && rightThree && rightTwo && rightOne) {
+        return true;
+      }
+    } else if (x == 0 && y == 9) { // up right corner
+      if (leftOne && leftTwo && leftThree && leftFour && threeShipBottom) {
+        return true;
+      }
+    } else if (x > 0 && x < 7 && y == 0) { // left mid
+      if (topOne && topRight && rightOne && rightTwo && rightThree && rightFour && threeShipBottom) {
+        return true;
+      }
+    } else if (x > 0 && x < 7 && y > 0 && y < 9) { // middle middle
+      if (topLeft && topOne && topRight && rightOne && rightTwo && rightThree && rightFour && threeShipBottom && leftFour && leftThree && leftTwo && leftOne) {
+        return true;
+      }
+    } else if (x > 0 && x < 7 && y == 9) { // right middle
+      if (topOne && topLeft && leftOne && leftTwo && leftThree && leftFour && threeShipBottom) {
+        return true;
+      }
+    } else if (x == 7 && y == 0) { // bottom left corner
+      if (topOne && topRight && rightOne && rightTwo && rightThree) {
+        return true;
+      }
+    } else if (x == 7 && y > 0 && y < 8) { // bottom middle
+      if (leftThree && leftTwo && leftOne && topLeft && topOne && topRight && rightOne && rightTwo && rightThree) {
+        return true;
+      }
+    } else if (x == 7 && y == 9) { // bottom right corner
+      if (leftThree && leftTwo && leftOne && topLeft && topOne) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private boolean fourBlueCheckHorizontal(int x, int y) {
     boolean topLeft = isCellBlue(x - 1, y - 1);
     boolean topOne = isCellBlue(x - 1, y);
@@ -445,6 +618,66 @@ public class Game {
       }
     } else if (x == 9 && y == 6) {
       if (leftCell && topLeft && topOne && topTwo && topThree && topFour) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean fourBlueCheckVertical(int x, int y) {
+    // tops
+    boolean topLeft = isCellBlue(x - 1, y - 1);
+    boolean topOne = isCellBlue(x - 1, y);
+    boolean topRight = isCellBlue(x - 1, y + 1);
+    // rights
+    boolean rightOne = isCellBlue(x, y + 1);
+    boolean rightTwo = isCellBlue(x + 1, y + 1);
+    boolean rightThree = isCellBlue(x + 2, y + 1);
+    boolean rightFour = isCellBlue(x + 3, y + 1);
+    // bottom cells
+    boolean rightFive = isCellBlue(x + 4, y + 1);
+    boolean fourShipBottom = isCellBlue(x + 4, y);
+    boolean leftFive = isCellBlue(x + 4, y - 1);
+    // lefts
+    boolean leftFour = isCellBlue(x + 3, y - 1);
+    boolean leftThree = isCellBlue(x + 2, y - 1);
+    boolean leftTwo = isCellBlue(x + 1, y - 1);
+    boolean leftOne = isCellBlue(x, y - 1);
+
+    if (x == 0 && y == 0) { // Up left corner
+      if (rightOne && rightTwo && rightThree && rightFour && rightFive && fourShipBottom) {
+        return true;
+      }
+    } else if (x == 0 && y > 0 && y < 9) { // top mid
+      if (leftOne && leftTwo && leftThree && leftFour && leftFive && fourShipBottom && rightFive && rightFour && rightThree && rightTwo && rightOne) {
+        return true;
+      }
+    } else if (x == 0 && y == 9) { // up right corner
+      if (leftOne && leftTwo && leftThree && leftFour && leftFive && fourShipBottom) {
+        return true;
+      }
+    } else if (x > 0 && x < 6 && y == 0) { // left mid
+      if (topOne && topRight && rightOne && rightTwo && rightThree && rightFour && rightFive && fourShipBottom) {
+        return true;
+      }
+    } else if (x > 0 && x < 6 && y > 0 && y < 9) { // middle middle
+      if (topLeft && topOne && topRight && rightOne && rightTwo && rightThree && rightFour && rightFive && fourShipBottom && leftFive && leftFour && leftThree && leftTwo && leftOne) {
+        return true;
+      }
+    } else if (x > 0 && x < 6 && y == 9) { // right middle
+      if (topOne && topLeft && leftOne && leftTwo && leftThree && leftFour && leftFive && fourShipBottom) {
+        return true;
+      }
+    } else if (x == 6 && y == 0) { // bottom left corner
+      if (topOne && topRight && rightOne && rightTwo && rightThree && rightFour) {
+        return true;
+      }
+    } else if (x == 6 && y > 0 && y < 8) { // bottom middle
+      if (leftFour && leftThree && leftTwo && leftOne && topLeft && topOne && topRight && rightOne && rightTwo && rightThree && rightFour) {
+        return true;
+      }
+    } else if (x == 6 && y == 9) { // bottom right corner
+      if (leftFour && leftThree && leftTwo && leftOne && topLeft && topOne) {
         return true;
       }
     }
@@ -508,6 +741,68 @@ public class Game {
       }
     } else if (x == 9 && y == 5) {
       if (leftCell && topLeft && topOne && topTwo && topThree && topFour && topFive) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean fiveBlueCheckVertical(int x, int y) {
+    // tops
+    boolean topLeft = isCellBlue(x - 1, y - 1);
+    boolean topOne = isCellBlue(x - 1, y);
+    boolean topRight = isCellBlue(x - 1, y + 1);
+    // rights
+    boolean rightOne = isCellBlue(x, y + 1);
+    boolean rightTwo = isCellBlue(x + 1, y + 1);
+    boolean rightThree = isCellBlue(x + 2, y + 1);
+    boolean rightFour = isCellBlue(x + 3, y + 1);
+    boolean rightFive = isCellBlue(x + 4, y + 1);
+    // bottom cells
+    boolean rightSix = isCellBlue(x + 5, y + 1);
+    boolean fiveShipBottom = isCellBlue(x + 5, y);
+    boolean leftSix = isCellBlue(x + 5, y - 1);
+    // lefts
+    boolean leftFive = isCellBlue(x + 4, y - 1);
+    boolean leftFour = isCellBlue(x + 3, y - 1);
+    boolean leftThree = isCellBlue(x + 2, y - 1);
+    boolean leftTwo = isCellBlue(x + 1, y - 1);
+    boolean leftOne = isCellBlue(x, y - 1);
+
+    if (x == 0 && y == 0) { // Up left corner
+      if (rightOne && rightTwo && rightThree && rightFour && rightFive && rightSix && fiveShipBottom) {
+        return true;
+      }
+    } else if (x == 0 && y > 0 && y < 9) { // top mid
+      if (leftOne && leftTwo && leftThree && leftFour && leftFive && leftSix && fiveShipBottom && rightSix && rightFive && rightFour && rightThree && rightTwo && rightOne) {
+        return true;
+      }
+    } else if (x == 0 && y == 9) { // up right corner
+      if (leftOne && leftTwo && leftThree && leftFour && leftFive && leftSix && fiveShipBottom) {
+        return true;
+      }
+    } else if (x > 0 && x < 5 && y == 0) { // left mid
+      if (topOne && topRight && rightOne && rightTwo && rightThree && rightFour && rightFive && rightSix && fiveShipBottom) {
+        return true;
+      }
+    } else if (x > 0 && x < 5 && y > 0 && y < 9) { // middle middle
+      if (topLeft && topOne && topRight && rightOne && rightTwo && rightThree && rightFour && rightFive && rightSix && fiveShipBottom && leftSix && leftFive && leftFour && leftThree && leftTwo && leftOne) {
+        return true;
+      }
+    } else if (x > 0 && x < 5 && y == 9) { // right middle
+      if (topOne && topLeft && leftOne && leftTwo && leftThree && leftFour && leftFive && leftSix && fiveShipBottom) {
+        return true;
+      }
+    } else if (x == 5 && y == 0) { // bottom left corner
+      if (topOne && topRight && rightOne && rightTwo && rightThree && rightFour && rightFive) {
+        return true;
+      }
+    } else if (x == 5 && y > 0 && y < 8) { // bottom middle
+      if (leftFive && leftFour && leftThree && leftTwo && leftOne && topLeft && topOne && topRight && rightOne && rightTwo && rightThree && rightFour && rightFive) {
+        return true;
+      }
+    } else if (x == 5 && y == 9) { // bottom right corner
+      if (leftFive && leftFour && leftThree && leftTwo && leftOne && topLeft && topOne) {
         return true;
       }
     }
