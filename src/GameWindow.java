@@ -23,7 +23,7 @@ public class GameWindow extends Application {
     // Place ships of different sizes
     // if lack of space for vertical, it tries to create horizontal
     game.deployShips();
-    game.randomShot();
+    game.shoot();
 
     // Create a GridPane to display the game board
     GridPane gridPane = new GridPane();

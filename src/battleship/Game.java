@@ -12,6 +12,7 @@ public class Game {
   private int nrOfShipColumns = 0;
   public static CellInfo[][] gameBoard = new CellInfo[GAME_BOARD_X][GAME_BOARD_Y];
 
+  // Constructor
   public static class CellInfo {
     private Rectangle cell = new Rectangle(30, 30, Color.BLUE); // Initialize with a white rectangle
 
@@ -24,6 +25,7 @@ public class Game {
     }
   }
 
+  // initialize map
   public void initializeGameBoard() {
     for (int i = 0; i < GAME_BOARD_X; i++) {
       for (int j = 0; j < GAME_BOARD_Y; j++) {
@@ -362,44 +364,100 @@ public class Game {
     }
   }
 
-  public void randomShot() {
+  // new shoot method test
+  public void shoot() {
     Random random = new Random();
-    int nrOfHits = 0;
+    int x = random.nextInt(GAME_BOARD_X);
+    int y = random.nextInt(GAME_BOARD_Y);
 
-    while (nrOfHits < nrOfShipColumns) {
+    if (!isCellGray(x, y)) {
+      shoot();
+    } else {
 
-      for (int tries = 0; tries < 1; tries++) {
-        if (nrOfHits == nrOfShipColumns) {
-          System.out.println("🥇🏆 Congratulations! 🏆🥇");
-          break;
-        } else {
-          int x = random.nextInt(GAME_BOARD_X);
-          int y = random.nextInt(GAME_BOARD_Y);
-
-          // if coordinate already has been shot - do another try
-          if (gameBoard[x][y].getCell().getFill() == Color.BLACK || gameBoard[x][y].getCell().getFill() == Color.RED) {
-            tries--;
-          }
-          // if ship has been hit, get another try.
-          else if (isShipHit(x, y)) {
-            System.out.println(); // Linebreaker
-            System.out.println("Shooting coordinates: (" + x + ", " + y + ")");
-
-            gameBoard[x][y].getCell().setFill(Color.RED); // change cell to red
-            System.out.println("Hit!");
-            System.out.println("Opponent 💬: Bastard!");
-            nrOfHits++; // count hits
-            tries--; // new try
-            // if shot misses and hits water
-          } else if (isCellBlue(x, y)) {
-            System.out.println(); // Linebreaker
-            System.out.println("Shooting coordinates: (" + x + ", " + y + ")");
-
-            gameBoard[x][y].getCell().setFill(Color.BLACK);
-            System.out.println("Miss!");
-          }
-        }
+      // if shot misses
+      if (isCellBlue(x, y)) {
+        makeCellBlack(x, y);
+        System.out.println("Initial Shot Missed at: (x" + x + ", y" + y + ")");
+      } else if (isCellGray(x, y)) {
+        makeCellRed(x, y);
+        System.out.println("Initial Shot Hit at: (x" + x + ", y" + y + ")");
+         aimRandomDirection(x, y);
       }
+      else if (isCellRed(x, y) || isCellBlack(x, y)) {
+        shoot();
+      }
+    }
+
+  }
+
+  public void followUpShot(int x, int y, Direction previousDirection) {
+
+    if (isCellBlue(x, y)) {
+      makeCellBlack(x, y);
+      System.out.println("Follow Up Shot Missed at: (x" + x + ", y" + y + ")");
+    } else if (isCellGray(x, y)) {
+      makeCellRed(x, y);
+      System.out.println("Follow Up Shot Hit at: (x" + x + ", y" + y + ")");
+      if (previousDirection == Direction.UP) {
+        aimUp(x, y);
+      } else if (previousDirection == Direction.RIGHT) {
+        aimRight(x, y);
+      } else if (previousDirection == Direction.DOWN) {
+        aimDown(x, y);
+      } else {
+        aimLeft(x, y);
+      }
+    }
+  }
+
+  public void aimRandomDirection(int x, int y) {
+    Random random = new Random();
+    int randomNr = random.nextInt(4)+1;
+
+    if (randomNr == 1) {
+      aimUp(x, y);
+    } else if (randomNr == 2) {
+      aimRight(x, y);
+    } else if (randomNr == 3) {
+      aimDown(x, y);
+    } else {
+      aimLeft(x, y);
+    }
+  }
+
+  public void aimUp(int x, int y) {
+    if (x - 1 > -1 && !isCellRed(x - 1, y)) {
+      x--;
+      followUpShot(x, y, Direction.UP);
+    } else {
+      aimRandomDirection(x, y);
+    }
+  }
+
+  public void aimRight(int x, int y) {
+    if (y + 1 < 10 && !isCellRed(x, y + 1)) {
+      y++;
+      followUpShot(x, y, Direction.RIGHT);
+    } else {
+      aimRandomDirection(x, y);
+    }
+  }
+
+  public void aimDown(int x, int y) {
+    if (x + 1 < 10 && !isCellRed(x + 1, y)) {
+      x++;
+      followUpShot(x, y, Direction.DOWN);
+    } else {
+      aimRandomDirection(x, y);
+    }
+  }
+
+  public void aimLeft(int x, int y) {
+    if (y - 1 > -1 && !isCellRed(x, y - 1)) {
+      y--;
+      followUpShot(x, y, Direction.LEFT);
+    } else {
+      aimRandomDirection(x, y);
     }
   }
 
@@ -883,9 +941,39 @@ public class Game {
     return false;
   }
 
+  // CHANGE COLOR
+  private void makeCellBlack(int x, int y) {
+    gameBoard[x][y].getCell().setFill(Color.BLACK);
+  }
+
+  private void makeCellRed(int x, int y) {
+    gameBoard[x][y].getCell().setFill(Color.RED);
+  }
+
+
+  // CHECK CELLS COLOR
+
   // Check if a cell is blue(water)
   private boolean isCellBlue(int x, int y) {
     return (x >= 0 && x < GAME_BOARD_X && y >= 0 && y < GAME_BOARD_Y
         && gameBoard[x][y].getCell().getFill() == Color.BLUE);
+  }
+
+  // check if a cell is black(already hit miss)
+  private boolean isCellBlack(int x, int y) {
+    return (x >= 0 && x < GAME_BOARD_X && y >= 0 && y < GAME_BOARD_Y
+        && gameBoard[x][y].getCell().getFill() == Color.BLACK);
+  }
+
+  // Check if a cell is red(hit ship)
+  private boolean isCellRed(int x, int y) {
+    return (x >= 0 && x < GAME_BOARD_X && y >= 0 && y < GAME_BOARD_Y
+        && gameBoard[x][y].getCell().getFill() == Color.RED);
+  }
+
+  // Check if a cell is grey(non-hit ship)
+  private boolean isCellGray(int x, int y) {
+    return (x >= 0 && x < GAME_BOARD_X && y >= 0 && y < GAME_BOARD_Y
+        && gameBoard[x][y].getCell().getFill() == Color.GRAY);
   }
 }
